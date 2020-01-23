@@ -31,7 +31,11 @@ Role Variables
 
 ```yaml
 ---
-# Put role variables
+kubectl_folder: '/opt/kubectl'
+kubectl_bin_path: '/usr/sbin'
+kubectl_tmp_folder: '/tmp'
+# not used actually
+kubectl_version: "v1.17.2"
 ```
 
 Dependencies
