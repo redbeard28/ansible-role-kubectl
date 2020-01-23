@@ -1,0 +1,26 @@
+---
+galaxy_info:
+  author: Jeremie CUADRADO
+  role_name: kubectl
+  description: Ansible role install kubectl.
+  license: GPLv3
+  company: Redbeard-Consulting
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: CentOS
+      versions:
+        - all
+
+  galaxy_tags:
+    - kubernetes
+    - system
+    - containers
+    - delivery
+
+  dependencies:
+    - src: redbeard28.bootstrap
+    - src: redbeard28.basetools

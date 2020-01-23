@@ -1,0 +1,30 @@
+---
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Get latest version"
+  get_url:
+    url: 'https://storage.googleapis.com/kubernetes-release/release/stable.txt'
+    dest: '{{ kubectl_tmp_folder }}'
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Extract Version number"
+  command: cat "{{ kubectl_tmp_folder }}"/stable.txt
+  register: version
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Create temp folder {{ kubectl_temp_folder }}"
+  file:
+    path: '{{ kubectl_folder }}-{{ version.stdout }}'
+    owner: root
+    group: root
+    state: directory
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Download extracted Version {{ version.stdout }}"
+  get_url:
+    url: 'https://storage.googleapis.com/kubernetes-release/release/{{ version.stdout }}/bin/linux/amd64/kubectl'
+    dest: '{{ kubectl_folder }}-{{ version.stdout }}'
+    mode: 755
+
+- name: "{{ ansible_distribution | lower }} | {{ ansible_distribution_release }} - Link extracted Version {{ kubectl_folder }}-{{ version.stdout }}/kubectl to PATH"
+  file:
+    src: "{{ kubectl_folder }}-{{ version.stdout }}/kubectl"
+    dest: "{{ kubectl_bin_path }}/kubectl"
+    owner: root
+    group: root
+    state: link
